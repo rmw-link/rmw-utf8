@@ -26,6 +26,9 @@ tidy = (txt)=>
     if txt.startsWith i
       return ''
 
+  pos = txt.indexOf('展开全文')
+  if pos > 0
+    txt = txt[..pos]
   for i from [
     '转发//'
     '回复:'
