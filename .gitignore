@@ -1,0 +1,10 @@
+nohup.out
+__pycache__/
+*.bz2
+target/
+node_modules/
+txt/
+.DS_Store
+*-error.log
+cache/
+

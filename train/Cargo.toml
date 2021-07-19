@@ -1,0 +1,24 @@
+[package]
+name = "train"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+aho-corasick = "0.7.18"
+#bytes = "1.0.1"
+hashbrown = "0.11.2"
+jieba-rs = "0.6.5"
+ngrams = "1.0.1"
+pdatastructs = "0.6.0"
+rayon = "1.5.1"
+speedy = "0.7.1"
+walkdir = "2.3.2"
+static_init= {git="https://gitlab.com/vkahl/static_init.git"}
+zstd = "0.9.0"
+blake3-file = {path="../blake3-file"}
+ruzstd = "0.2.4"
+sled = "0.34.6"
+#sdb = "0.0.9"
+#sdb = {path="/Users/z/rmw/sdb/sdb"}

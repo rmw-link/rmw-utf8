@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+_DIR=$(dirname $(realpath "$0"))
+
+exec npx nodemon -e js,mjs,coffee  --exec $_DIR/coffee $@
+

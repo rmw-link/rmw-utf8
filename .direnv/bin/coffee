@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+_DIR=$(dirname $(realpath "$0"))
+
+filepath=$(realpath $1)
+
+cd $(dirname $filepath)
+#echo `pwd`
+
+exec node  --trace-warnings --es-module-specifier-resolution=node --trace-uncaught --expose-gc --experimental-loader "file://$_DIR/coffee.mjs" --unhandled-rejections=strict $filepath $@

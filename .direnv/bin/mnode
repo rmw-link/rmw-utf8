@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+_DIR=$(dirname $(realpath "$0"))
+filepath=$(realpath $1)
+
+cd $(dirname $filepath)
+
+exec node --trace-warnings --es-module-specifier-resolution=node --trace-uncaught --expose-gc --experimental-loader "file://$_DIR/node.mjs" --unhandled-rejections=strict $filepath $@
+
