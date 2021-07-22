@@ -141,7 +141,7 @@ fn line_iter() -> impl Iterator<Item = LineIter> {
 fn word_huffman() {
   let len_rev = |a: &String, b: &String| b.len().cmp(&a.len());
 
-  let epsilon = 0.00000003;
+  let epsilon = 0.00000004;
   let mut lc = LossyCounter::with_epsilon(epsilon);
 
   let pre_version = if let Some(v) = DB.get(&"").unwrap() {
