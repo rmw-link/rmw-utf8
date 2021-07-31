@@ -21,7 +21,7 @@ use walkdir::WalkDir;
 mod lossycounter;
 use lossycounter::LossyCounter;
 
-const CACHE_COUNTED: &str = "cache/counted";
+//const CACHE_COUNTED: &str = "cache/counted";
 
 #[dynamic]
 pub static DIR: PathBuf = env::current_exe()
@@ -37,12 +37,14 @@ pub static DIR: PathBuf = env::current_exe()
 #[dynamic]
 pub static CACHE: PathBuf = (&*DIR).join("cache");
 
+/*
 #[dynamic]
 pub static DB: sled::Db = {
   let cache = &*CACHE;
   let _ = create_dir(cache);
   sled::open(cache).unwrap()
 };
+*/
 
 #[dynamic]
 pub static VERSION: u32 = SystemTime::now()
@@ -144,27 +146,28 @@ fn word_huffman() {
   let epsilon = 0.00000004;
   let mut lc = LossyCounter::with_epsilon(epsilon);
 
-  let pre_version = if let Some(v) = DB.get(&"").unwrap() {
-    u32::from_ne_bytes(v[..4].try_into().unwrap())
-  } else {
-    0
-  };
-  if pre_version != 0 {
-    let fp = Path::new(&*DIR).join(CACHE_COUNTED.to_owned() + ".zst");
-    println!("加载缓存中 {}", fp.display().to_string());
-    let mut file = File::open(&fp).unwrap();
-    let mut decoder = ruzstd::StreamingDecoder::new(&mut file).unwrap();
-    let mut bytes: Vec<u8> = Vec::new();
-    decoder.read_to_end(&mut bytes).unwrap();
-    let counted = LossyCounted::read_from_buffer_with_ctx(Endianness::LittleEndian, &bytes)
-      .unwrap()
-      .0;
+  /*
+    let pre_version = if let Some(v) = DB.get(&"").unwrap() {
+      u32::from_ne_bytes(v[..4].try_into().unwrap())
+    } else {
+      0
+    };
+    if pre_version != 0 {
+      let fp = Path::new(&*DIR).join(CACHE_COUNTED.to_owned() + ".zst");
+      println!("加载缓存中 {}", fp.display().to_string());
+      let mut file = File::open(&fp).unwrap();
+      let mut decoder = ruzstd::StreamingDecoder::new(&mut file).unwrap();
+      let mut bytes: Vec<u8> = Vec::new();
+      decoder.read_to_end(&mut bytes).unwrap();
+      let counted = LossyCounted::read_from_buffer_with_ctx(Endianness::LittleEndian, &bytes)
+        .unwrap()
+        .0;
 
-    for (k, v) in counted {
-      lc.add(k, v);
+      for (k, v) in counted {
+        lc.add(k, v);
+      }
     }
-  }
-
+  */
   println!("第1次扫描，统计潜在的高频ngram");
   let elements = {
     let (tx, recv) = sync_channel(8);
@@ -173,7 +176,8 @@ fn word_huffman() {
     thread::spawn(move || {
       txt_line_iter()
         .par_bridge()
-        .map_with(tx, |tx, (txt_path, iter)| {
+        .map_with(tx, |tx, (_, iter)| {
+          /*
           let hash = blake3_file::hash(&txt_path).unwrap();
           let exist;
           if let Some(v) = DB.get(&hash).unwrap() {
@@ -186,6 +190,7 @@ fn word_huffman() {
           } else {
             exist = false;
           }
+          */
           let mut wc = HashMap::new();
           for line in iter {
             let words = jieba
@@ -213,9 +218,11 @@ fn word_huffman() {
             }
           }
           let _ = tx.send(wc);
+          /*
           if !exist {
             let _ = DB.insert(hash, &(*VERSION).to_ne_bytes());
           }
+          */
         })
         .for_each(drop);
     });
@@ -225,11 +232,13 @@ fn word_huffman() {
         lc.add(words, n);
       }
     }
+    /*
     write(
       LossyCounted(lc.query(0.0).collect::<Vec<_>>()),
       CACHE_COUNTED,
     );
     let _ = DB.insert(&"", &(*VERSION).to_ne_bytes());
+    */
     let threshold = 0.0000003;
 
     let elements: Vec<_> = lc.query(threshold).collect();
