@@ -297,8 +297,9 @@ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 
 [[package]]
 name = "static_init"
-version = "1.0.0"
-source = "git+https://gitlab.com/vkahl/static_init.git#bffc02b27bcaa052994f14d7d2013a957cb74187"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a12a91dc56a0b47b48a3150157803b02cf82aa4c15ed499cb9b7ee0ff39941b1"
 dependencies = [
  "bitflags",
  "cfg_aliases",
@@ -311,8 +312,9 @@ dependencies = [
 
 [[package]]
 name = "static_init_macro"
-version = "1.0.0"
-source = "git+https://gitlab.com/vkahl/static_init.git#bffc02b27bcaa052994f14d7d2013a957cb74187"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5b3fb6e118f42ea83548bb2194a79f5cbc8866fc38d87f6548139a7fac10e732"
 dependencies = [
  "cfg_aliases",
  "memchr",
