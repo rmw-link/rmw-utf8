@@ -134,7 +134,7 @@ gb18030中一个中文两个字节，一下子就省了33%的空间。但是gb18
 
 于是我想，能不能做个更通用更优的编码压缩方案。
 
-unicode字符数是固定已知的，unicode-13.0.0方案有143859个字符([参见这里](https://github.com/rmw-link/utf8_compress/blob/main/all_char.py))。
+unicode字符数是固定已知的，unicode-13.0.0方案有143859个字符([参见这里](https://github.com/rmw-link/utf8_compress/blob/master/all_char.py))。
 
 完全可以统计下每个字的出现频率，然后用霍夫曼编码来压缩。
 
