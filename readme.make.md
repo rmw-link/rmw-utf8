@@ -2,7 +2,9 @@
 
 Short text compression algorithm for utf-8 Chinese (based on rust programming language).
 
-面向utf-8中文的短文本压缩算法（基于rust编程语言开发）。
+面向utf-8的短文本压缩算法（为中文压缩优化，基于rust编程语言开发）。
+
+注意：rmw-utf8 只能压缩utf-8文本，不是通用的二进制压缩算法
 
 ## 如何使用
 
@@ -18,8 +20,6 @@ fn main() {
 ```
 
 ## 压缩率评测
-
-注意：rmw-utf8 只能压缩utf-8文本，不是通用的二进制压缩算法
 
 ```
 #include compress_test/test.txt
