@@ -2,9 +2,9 @@
 
 # rmw-utf8
 
-Short text compression algorithm for utf-8 Chinese (based on rust programming language).
+Short text compression algorithm for utf-8 (optimized for Chinese , developed based on rust programming language).
 
-面向utf-8的短文本压缩算法（为中文压缩优化，基于rust编程语言开发）。
+面向utf-8的短文本压缩算法（为中文优化，基于rust编程语言开发）。
 
 注意：rmw-utf8 只能压缩utf-8文本，不是通用的二进制压缩算法
 
