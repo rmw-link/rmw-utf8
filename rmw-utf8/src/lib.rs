@@ -2,7 +2,7 @@ use aho_corasick::{AhoCorasick, AhoCorasickBuilder, MatchKind};
 use bit_vec::BitVec;
 use huffman_compress::{Book, CodeBuilder, Tree};
 use speedy::{Endianness, Readable};
-use static_init::dynamic;
+use staticinit::dynamic;
 use std::char;
 use std::io::{prelude::*, Cursor};
 use std::str::from_utf8_unchecked;
