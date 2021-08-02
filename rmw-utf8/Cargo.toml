@@ -2,10 +2,10 @@ cargo-features = ["edition2021"]
 
 [package]
 name = "rmw-utf8"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2021"
 license = "Apache-2.0"
-repository = "https://github.com/rmw-lib/rmw-utf8"
+repository = "https://github.com/rmw-link/rmw-utf8"
 documentation = "https://docs.rs/crate/rmw-utf8"
 readme = "README.md"
 description="Short text compression algorithm for utf-8 (optimized for Chinese , developed based on rust programming language). 面向utf-8的短文本压缩算法（为中文压缩优化，基于rust编程语言开发）。"
