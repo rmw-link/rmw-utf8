@@ -169,7 +169,7 @@ dependencies = [
 
 [[package]]
 name = "rmw-utf8"
-version = "0.0.2"
+version = "0.0.3"
 dependencies = [
  "aho-corasick",
  "bit-vec",
@@ -201,18 +201,18 @@ dependencies = [
 
 [[package]]
 name = "speedy"
-version = "0.7.1"
+version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "92a94ba2dac24da474e3339dfe17709e5c103172bb4a350e5660eb5277305764"
+checksum = "703879e10132e194944ab9870b8be5eb89ebe841548695cb7b75afc6feea6f10"
 dependencies = [
  "speedy-derive",
 ]
 
 [[package]]
 name = "speedy-derive"
-version = "0.7.1"
+version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c359205f2cf241a00e3fcb62ac2dcd4094df137ea19541dad43a404416470141"
+checksum = "8a6186bf16640ac0e9fb6d72fee601faa8cb2bf3141fd56cef20b72c681429ad"
 dependencies = [
  "proc-macro2",
  "quote",

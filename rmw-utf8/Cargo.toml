@@ -16,7 +16,7 @@ bit-vec = "0.6.3"
 huffman-compress = "0.6.1"
 lazy_static = "1.4.0"
 ruzstd = "0.2.4"
-speedy = "0.7.1"
+speedy = "0.8.0"
 utf8-width = "0.1.5"
 
 #hashbrown = {version="0.11.2",features = ["raw","rayon","nightly","inline-more","ahash","ahash-compile-time-rng"]}
