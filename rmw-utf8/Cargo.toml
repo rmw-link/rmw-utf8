@@ -2,7 +2,7 @@ cargo-features = ["edition2021"]
 
 [package]
 name = "rmw-utf8"
-version = "0.0.2"
+version = "0.0.3"
 edition = "2021"
 license = "Apache-2.0"
 repository = "https://github.com/rmw-link/rmw-utf8"
@@ -14,9 +14,9 @@ description="Short text compression algorithm for utf-8 (optimized for Chinese ,
 aho-corasick = "0.7.18"
 bit-vec = "0.6.3"
 huffman-compress = "0.6.1"
+lazy_static = "1.4.0"
 ruzstd = "0.2.4"
 speedy = "0.7.1"
-static_init = "1.0.1"
 utf8-width = "0.1.5"
 
 #hashbrown = {version="0.11.2",features = ["raw","rayon","nightly","inline-more","ahash","ahash-compile-time-rng"]}

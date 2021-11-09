@@ -1,8 +1,8 @@
 use aho_corasick::{AhoCorasick, AhoCorasickBuilder, MatchKind};
 use bit_vec::BitVec;
 use huffman_compress::{Book, CodeBuilder, Tree};
+use lazy_static::*;
 use speedy::{Endianness, Readable};
-use static_init::dynamic;
 use std::char;
 use std::io::{prelude::*, Cursor};
 use std::str::from_utf8_unchecked;
@@ -11,50 +11,49 @@ use utf8_width::get_width;
 #[derive(PartialEq, Debug, Readable)]
 struct WordCharCount(Vec<(String, u64)>, Vec<(char, u64)>);
 
-#[dynamic]
-static WORD_CHAR_COUNT: (Vec<(String, u64)>, Vec<(String, u64)>) = {
-  let zst = include_bytes!("d.zst");
-  let mut zstc = Cursor::new(zst);
-  let mut decoder = ruzstd::StreamingDecoder::new(&mut zstc).unwrap();
-  let mut bytes: Vec<u8> = Vec::with_capacity(zst.len() * 5);
-  decoder.read_to_end(&mut bytes).unwrap();
+lazy_static! {
+  static ref WORD_CHAR_COUNT: (Vec<(String, u64)>, Vec<(String, u64)>) = {
+    let zst = include_bytes!("d.zst");
+    let mut zstc = Cursor::new(zst);
+    let mut decoder = ruzstd::StreamingDecoder::new(&mut zstc).unwrap();
+    let mut bytes: Vec<u8> = Vec::with_capacity(zst.len() * 5);
+    decoder.read_to_end(&mut bytes).unwrap();
 
-  let wcc = WordCharCount::read_from_buffer_with_ctx(Endianness::LittleEndian, &bytes).unwrap();
+    let wcc = WordCharCount::read_from_buffer_with_ctx(Endianness::LittleEndian, &bytes).unwrap();
 
-  let mut word_li = wcc.0;
-  let char_li = wcc.1;
-  let mut char_vec = Vec::with_capacity(char_li.len());
-  for (k, v) in char_li {
-    if k == '\n' {
-      word_li.push(("\n\n".into(), v / 4));
+    let mut word_li = wcc.0;
+    let char_li = wcc.1;
+    let mut char_vec = Vec::with_capacity(char_li.len());
+    for (k, v) in char_li {
+      if k == '\n' {
+        word_li.push(("\n\n".into(), v / 4));
+      }
+      char_vec.push((k.to_string(), v));
     }
-    char_vec.push((k.to_string(), v));
-  }
 
-  (word_li, char_vec)
-};
+    (word_li, char_vec)
+  };
+  static ref G: (AhoCorasick, Book<&'static [u8]>, Tree<&'static [u8]>) = {
+    let (word_li, char_li) = &*WORD_CHAR_COUNT;
 
-#[dynamic]
-static G: (AhoCorasick, Book<&'static [u8]>, Tree<&'static [u8]>) = {
-  let (word_li, char_li) = &*WORD_CHAR_COUNT;
+    let mut weights = Vec::with_capacity(word_li.len() + char_li.len());
+    for (k, v) in word_li.iter().chain(char_li.iter()) {
+      weights.push((k.as_bytes(), *v));
+    }
 
-  let mut weights = Vec::with_capacity(word_li.len() + char_li.len());
-  for (k, v) in word_li.iter().chain(char_li.iter()) {
-    weights.push((k.as_bytes(), *v));
-  }
+    let (book, tree) = CodeBuilder::from_iter(weights.into_iter()).finish();
 
-  let (book, tree) = CodeBuilder::from_iter(weights.into_iter()).finish();
+    let ac = AhoCorasickBuilder::new()
+      .match_kind(MatchKind::LeftmostFirst)
+      .build(
+        [&b"\r\n"[..]]
+          .iter()
+          .chain(&word_li.iter().map(|x| x.0.as_bytes()).collect::<Vec<_>>()),
+      );
 
-  let ac = AhoCorasickBuilder::new()
-    .match_kind(MatchKind::LeftmostFirst)
-    .build(
-      [&b"\r\n"[..]]
-        .iter()
-        .chain(&word_li.iter().map(|x| x.0.as_bytes()).collect::<Vec<_>>()),
-    );
-
-  (ac, book, tree)
-};
+    (ac, book, tree)
+  };
+}
 
 pub fn encode(input: &[u8]) -> Vec<u8> {
   let (ac, book, _) = &*G;
