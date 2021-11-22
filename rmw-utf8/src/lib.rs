@@ -3,16 +3,17 @@ use bit_vec::BitVec;
 use huffman_compress::{Book, CodeBuilder, Tree};
 use lazy_static::*;
 use speedy::{Endianness, Readable};
-use std::char;
 use std::io::{prelude::*, Cursor};
 use std::str::from_utf8_unchecked;
 use utf8_width::get_width;
 
+type VecStrU64 = Vec<(String, u64)>;
+
 #[derive(PartialEq, Debug, Readable)]
-struct WordCharCount(Vec<(String, u64)>, Vec<(char, u64)>);
+struct WordCharCount(VecStrU64, Vec<(char, u64)>);
 
 lazy_static! {
-  static ref WORD_CHAR_COUNT: (Vec<(String, u64)>, Vec<(String, u64)>) = {
+  static ref WORD_CHAR_COUNT: (VecStrU64, VecStrU64) = {
     let zst = include_bytes!("d.zst");
     let mut zstc = Cursor::new(zst);
     let mut decoder = ruzstd::StreamingDecoder::new(&mut zstc).unwrap();
@@ -106,7 +107,7 @@ pub fn encode(input: &[u8]) -> Vec<u8> {
 pub fn decode(input: &[u8]) -> String {
   // 解压缩
   let tree = &(G.2);
-  let mut bits = BitVec::from_bytes(&input);
+  let mut bits = BitVec::from_bytes(input);
   let mut len = bits.len();
 
   while len != 0 {
