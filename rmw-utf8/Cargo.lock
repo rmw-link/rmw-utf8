@@ -86,7 +86,7 @@ dependencies = [
 
 [[package]]
 name = "rmw-utf8"
-version = "0.0.3"
+version = "0.0.4"
 dependencies = [
  "aho-corasick",
  "bit-vec",
