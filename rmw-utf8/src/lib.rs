@@ -13,7 +13,7 @@ type VecStrU64 = Vec<(String, u64)>;
 struct WordCharCount(VecStrU64, Vec<(char, u64)>);
 
 lazy_static! {
-  static ref WORD_CHAR_COUNT: (VecStrU64, VecStrU64) = {
+  pub static ref WORD_CHAR_COUNT: (VecStrU64, VecStrU64) = {
     let zst = include_bytes!("d.zst");
     let mut zstc = Cursor::new(zst);
     let mut decoder = ruzstd::StreamingDecoder::new(&mut zstc).unwrap();
@@ -34,7 +34,7 @@ lazy_static! {
 
     (word_li, char_vec)
   };
-  static ref G: (AhoCorasick, Book<&'static [u8]>, Tree<&'static [u8]>) = {
+  pub static ref G: (AhoCorasick, Book<&'static [u8]>, Tree<&'static [u8]>) = {
     let (word_li, char_li) = &*WORD_CHAR_COUNT;
 
     let mut weights = Vec::with_capacity(word_li.len() + char_li.len());
