@@ -56,6 +56,11 @@ lazy_static! {
   };
 }
 
+pub fn init() {
+  lazy_static::initialize(&WORD_CHAR_COUNT);
+  lazy_static::initialize(&G);
+}
+
 pub fn encode(input: &[u8]) -> Vec<u8> {
   let (ac, book, _) = &*G;
 
